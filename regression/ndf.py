@@ -91,6 +91,7 @@ class Tree(nn.Module):
             self.feature_mask = self.feature_mask.cuda()
         x = torch.mm(x, self.feature_mask)
         decision = self.decision(feats)
+
         
         decision = torch.unsqueeze(decision,dim=2)
         decision_comp = 1-decision
