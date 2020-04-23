@@ -207,7 +207,7 @@ class BasicBlock(nn.Module):
 
 class ResNet(nn.Module):
 
-    def __init__(self, block, layers, num_classes, grayscale):
+    def __init__(self, block, layers, num_classes, grayscale,vector_length):
         self.num_classes = num_classes
         self.inplanes = 64
         if grayscale:
@@ -219,6 +219,8 @@ class ResNet(nn.Module):
                                bias=False)
         self.bn1 = nn.BatchNorm2d(64)
         self.relu = nn.ReLU(inplace=True)
+        self.n_leaf = 2**6
+        self.vector_length = vector_length
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
         self.layer1 = self._make_layer(block, 64, layers[0])
         self.layer2 = self._make_layer(block, 128, layers[1], stride=2)
@@ -284,12 +286,12 @@ class ResNet(nn.Module):
         return logits, probas
 
 
-def resnet34(num_classes, grayscale):
+def resnet34(num_classes, grayscale,vector_length):
     """Constructs a ResNet-34 model."""
     model = ResNet(block=BasicBlock,
                    layers=[3, 4, 6, 3],
                    num_classes=num_classes,
-                   grayscale=grayscale)
+                   grayscale=grayscale,vector_length)
     return model
 
 class Forest(nn.Module):
@@ -302,7 +304,7 @@ class Forest(nn.Module):
         self.feature_length = feature_length
         self.vector_length = vector_length
         for _ in range(n_tree):
-            tree = resnet34(feature_length,grayscale)
+            tree = resnet34(feature_length,grayscale,vector_length)
             self.trees.append(tree)
 
     def forward(self, x, save_flag = False):
