@@ -336,6 +336,7 @@ class NeuralDecisionForest(nn.Module):
     def forward(self, x, debug = False, save_flag = False):
 
         feats, reg_loss = self.feature_layer(x)
+        print(type(feats))
         feats = np.concatenate((feats,np.ones(19)))
         feats=np.reshape(feats,64,1,7,7)
         if save_flag:
