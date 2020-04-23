@@ -267,9 +267,11 @@ class ResNet(nn.Module):
         return p
 
     def forward(self, x):
+        print(x.shape)
         if x.is_cuda and not self.feature_mask.is_cuda:
             self.feature_mask = self.feature_mask.cuda()
         x = torch.mm(x, self.feature_mask)
+        print(x.shape)
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
