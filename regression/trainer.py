@@ -121,8 +121,8 @@ def train(model, optim, sche, db, opt, exp_id):
             if opt.history:
                 train_loss_history.append((epoch, batch_idx, loss.data.item()))
                     
-            # Update the leaf node estimation    
-            if opt.leaf_node_type == 'simple' and batch_idx % opt.update_every == 0: 
+            # Update the leaf node estimation
+            '''if opt.leaf_node_type == 'simple' and batch_idx % opt.update_every == 0: 
                 logging.info("Epoch %d : Update leaf node prediction"%(epoch))
                 target_batches = prepare_batches(model, train_set, opt)
                 # Update label prediction for each tree
@@ -140,7 +140,7 @@ def train(model, optim, sche, db, opt, exp_id):
                 for tree in model.forest.trees:   
                     del tree.mu_cache
                     tree.mu_cache = []
-                        
+               '''
             
             if opt.eval and batch_idx!= 0 and batch_idx % opt.eval_every == 0:
                 # evaluate model

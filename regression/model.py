@@ -13,7 +13,7 @@ def prepare_model(opt):
                                   input_size = opt.image_size,
                                   pretrained = opt.pretrained)    
     forest = ndf.Forest(opt.n_tree, opt.tree_depth, opt.num_output, 
-                        1, opt.cuda)
+                        1,opt.gray_scale, opt.cuda)
     model = ndf.NeuralDecisionForest(feat_layer, forest)     
     if opt.cuda:
         model = model.cuda()
