@@ -212,10 +212,7 @@ class ResNet(nn.Module):
     def __init__(self, vector_length, block, layers, num_classes, grayscale):
         self.num_classes = num_classes
         self.inplanes = 64
-        if grayscale:
-            in_dim = 1
-        else:
-            in_dim = 3
+        in_dim=1
         super(ResNet, self).__init__()
         self.conv1 = nn.Conv2d(in_dim, 64, kernel_size=7, stride=2, padding=3,
                                bias=False)
