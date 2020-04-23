@@ -117,8 +117,6 @@ def prepare_db(opt):
             logging.info('Preparing CACD dataset (training with the validation set).')
         train_list.append(FacialAgeDataset(train_dic, opt, 'train'))
         eval_list.append(FacialAgeDataset(eval_dic, opt, 'eval'))
-        print(train_list.shape)
-        print(eval_list.shape)
         return {'train':train_list, 'eval':eval_list}
     elif opt.dataset_name == "Morph":
         raise ValueError
