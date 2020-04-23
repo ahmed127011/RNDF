@@ -300,7 +300,7 @@ def resnet34(num_classes, grayscale,vector_length):
 
 class Forest(nn.Module):
     # a neural decision forest is an ensemble of neural decision trees
-    def __init__(self, n_tree, tree_depth, feature_length, vector_length,grayscale, use_cuda = False):
+    def __init__(self, n_tree, tree_depth, feature_length, vector_length,grayscale=False, use_cuda = False):
         super(Forest, self).__init__()
         self.trees = nn.ModuleList()
         self.n_tree  = n_tree
@@ -339,7 +339,6 @@ class NeuralDecisionForest(nn.Module):
     def forward(self, x, debug = False, save_flag = False):
 
         feats, reg_loss = self.feature_layer(x)
-        print(feats.shape)
         if save_flag:
             # return some intermediate results
             pred, cache = self.forest(feats, save_flag = True)
