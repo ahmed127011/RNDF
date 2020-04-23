@@ -227,6 +227,12 @@ class ResNet(nn.Module):
         self.avgpool = nn.AvgPool2d(7, stride=1, padding=2)
         self.fc = nn.Linear(2048 * block.expansion, 1, bias=False)
         self.linear_1_bias = nn.Parameter(torch.zeros(self.num_classes-1).float())
+        using_idx = np.random.choice(num_classes, self.n_leaf, replace=False)
+        onehot = np.eye(num_classes)
+        self.feature_mask = onehot[using_idx].T
+        self.feature_mask = Parameter(torch.from_numpy(self.feature_mask).type(torch.FloatTensor), requires_grad=False)
+        # a leaf node contains a mean vector and a covariance matrix
+        self.mean = np.ones((self.n_leaf, self.vector_length))
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -252,8 +258,14 @@ class ResNet(nn.Module):
             layers.append(block(self.inplanes, planes))
 
         return nn.Sequential(*layers)
+    def pred(self, x):
+        p = torch.mm(self(x), self.mean)
+        return p
 
     def forward(self, x):
+        if x.is_cuda and not self.feature_mask.is_cuda:
+            self.feature_mask = self.feature_mask.cuda()
+        x = torch.mm(x, self.feature_mask)
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
