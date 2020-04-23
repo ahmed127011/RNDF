@@ -44,7 +44,6 @@ def main():
     
     # sanity check for FG-NET dataset, not used for now   
     # assertion: the total images in the eval set lists should be 1002
-    print(db["eval"].size)
     total_eval_imgs = sum([len(db['eval'][i]) for i in range(len(db['eval']))])
     print(total_eval_imgs)
     if db['train'][0].name == 'FGNET':
