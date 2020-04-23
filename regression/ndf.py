@@ -300,7 +300,7 @@ def resnet34(num_classes, grayscale,vector_length):
 
 class Forest(nn.Module):
     # a neural decision forest is an ensemble of neural decision trees
-    def __init__(self, n_tree, tree_depth, feature_length, vector_length,grayscale=False, use_cuda = False):
+    def __init__(self, n_tree, tree_depth, feature_length, vector_length,grayscale=True, use_cuda = False):
         super(Forest, self).__init__()
         self.trees = nn.ModuleList()
         self.n_tree  = n_tree
