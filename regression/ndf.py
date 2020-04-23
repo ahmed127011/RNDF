@@ -92,7 +92,7 @@ class Tree(nn.Module):
         x = torch.mm(x, self.feature_mask)
         decision = self.decision(feats)
 
-        
+
         decision = torch.unsqueeze(decision,dim=2)
         decision_comp = 1-decision
         decision = torch.cat((decision,decision_comp),dim=2)
@@ -209,7 +209,7 @@ class BasicBlock(nn.Module):
 
 class ResNet(nn.Module):
 
-    def __init__(self, block, layers, num_classes, grayscale,vector_length):
+    def __init__(self, vector_length, block, layers, num_classes, grayscale):
         self.num_classes = num_classes
         self.inplanes = 64
         if grayscale:
@@ -290,10 +290,10 @@ class ResNet(nn.Module):
 
 def resnet34(num_classes, grayscale,vector_length):
     """Constructs a ResNet-34 model."""
-    model = ResNet(block=BasicBlock,
+    model = ResNet(vector_length,block=BasicBlock,
                    layers=[3, 4, 6, 3],
                    num_classes=num_classes,
-                   grayscale=grayscale,vector_length)
+                   grayscale=grayscale)
     return model
 
 class Forest(nn.Module):
