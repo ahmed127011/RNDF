@@ -337,7 +337,7 @@ class NeuralDecisionForest(nn.Module):
 
         feats, reg_loss = self.feature_layer(x)
         print(type(feats))
-        nfeats=feats.numpy()
+        nfeats=feats.cpu().numpy()
         nfeats = np.concatenate((nfeats,np.ones(19)))
         nfeats=np.reshape(nfeats,64,1,7,7)
         if save_flag:
