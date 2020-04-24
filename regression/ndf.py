@@ -271,7 +271,6 @@ class ResNet(nn.Module):
         return p
 
     def forward(self, x):
-        print(x.shape)
         if x.is_cuda and not self.feature_mask.is_cuda:
             self.feature_mask = self.feature_mask.cuda()
         x = torch.mm(x, self.feature_mask)
@@ -291,7 +290,6 @@ class ResNet(nn.Module):
         x = self.layer4(x)
         x = self.avgpool(x)
         x = x.view(x.size(0), -1)
-        print("avgpool:"+str(x.shape))
         logits = self.fc(x)
         logits = logits + self.linear_1_bias
         probas = torch.sigmoid(logits)
@@ -331,15 +329,15 @@ class Forest(nn.Module):
                 cache.append(cache_tree)
             else:
                 p = tree.pred(x)
+            print(p.size())
+            print("\n")
             predictions.append(p.unsqueeze(2))
         prediction = torch.cat(predictions, dim=2)
-        print(predictions[0].size())
         prediction = torch.sum(prediction, dim=2) / self.n_tree
         if save_flag:
             return prediction, cache
         else:
-            print("heererere")
-            print(len(prediction))
+
             return prediction
 
 
@@ -360,7 +358,5 @@ class NeuralDecisionForest(nn.Module):
         else:
 
             pred = self.forest(feats)
-            print("heererere")
-            print(len(pred))
 
             return pred, reg_loss
