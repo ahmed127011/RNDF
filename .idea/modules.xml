@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/RNDF.iml" filepath="$PROJECT_DIR$/.idea/RNDF.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../coral-cnn/.idea/coral-cnn.iml" filepath="$PROJECT_DIR$/../coral-cnn/.idea/coral-cnn.iml" />
+    </modules>
+  </component>
+</project>
