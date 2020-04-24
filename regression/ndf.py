@@ -212,9 +212,8 @@ class ResNet(nn.Module):
     def __init__(self, vector_length, block, layers, num_classes, grayscale):
         self.num_classes = num_classes
         self.inplanes = 64
-        in_dim=1
         super(ResNet, self).__init__()
-        self.conv1 = nn.Conv2d(30, 64, kernel_size=5, stride=4, padding=3,
+        self.conv1 = nn.Conv1d(30, 64, kernel_size=1, stride=2, padding=3,
                                bias=False)
         self.bn1 = nn.BatchNorm2d(64)
         self.relu = nn.ReLU(inplace=True)
@@ -233,6 +232,7 @@ class ResNet(nn.Module):
         self.feature_mask = onehot[using_idx].T
         self.feature_mask = Parameter(torch.from_numpy(self.feature_mask).type(torch.FloatTensor), requires_grad=False)
         # a leaf node contains a mean vector and a covariance matrix
+        print("LEAFS: "+self.n_leaf+"\nVECTOR: "+self.vector_length)
         self.mean = np.ones((self.n_leaf, self.vector_length))
 
         for m in self.modules():
@@ -268,7 +268,7 @@ class ResNet(nn.Module):
         if x.is_cuda and not self.feature_mask.is_cuda:
             self.feature_mask = self.feature_mask.cuda()
         x = torch.mm(x, self.feature_mask)
-        x = self.conv1(x)
+        x = self.conv1(x.T)
         x = self.bn1(x)
         x = self.relu(x)
         x = self.maxpool(x)
