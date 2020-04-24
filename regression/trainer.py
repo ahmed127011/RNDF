@@ -193,7 +193,9 @@ def evaluate(model, dataset, opt, report_loss = True, predict = False):
         with torch.no_grad():
             if opt.cuda:
                 data, target = data.cuda(), target.cuda()
-            prediction, reg_loss = model(data)  
+            prediction, reg_loss = model(data)
+            print(len(prediction))
+            print(prediction.shape)
             predicted_ages += [prediction[i].data.item() for i in range(len(prediction))]
             age = prediction.view(len(prediction), -1)
             if report_loss:
