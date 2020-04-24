@@ -336,7 +336,13 @@ class Forest(nn.Module):
         print(len(predictions))
         print(self.n_tree)
         prediction = torch.cat(predictions, dim=2)
+        print("heererere")
+        print(len(predictions))
+        print(self.n_tree)
         prediction = torch.sum(prediction, dim=2) / self.n_tree
+        print("heererere")
+        print(len(predictions))
+        print(self.n_tree)
         if save_flag:
             return prediction, cache
         else:
