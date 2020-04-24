@@ -266,8 +266,7 @@ class ResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def pred(self, x):
-        print("x shape")
-        print(self(x).shape)
+        print("x shape: "+str(self(x).shape))
         p = torch.mm(self(x), self.mean)
         return p
 
