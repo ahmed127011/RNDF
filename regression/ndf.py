@@ -59,7 +59,7 @@ class Tree(nn.Module):
         self.feature_mask = onehot[using_idx].T
         self.feature_mask = Parameter(torch.from_numpy(self.feature_mask).type(torch.FloatTensor), requires_grad=False)
         # a leaf node contains a mean vector and a covariance matrix
-        self.mean = np.ones((self.n_leaf, self.vector_length))
+        self.mean = torch.ones((self.n_leaf, self.vector_length))
         # TODO: use k-means clusterring to perform leaf node initialization
         self.mu_cache = []
         # use sigmoid function as the decision function
@@ -266,7 +266,7 @@ class ResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def pred(self, x):
-        p = torch.mm(self(x)["probas"], self.mean)
+        p = torch.mm(self(x)[0], self.mean)
         return p
 
     def forward(self, x):
