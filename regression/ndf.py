@@ -266,7 +266,7 @@ class ResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def pred(self, x):
-        print("x shape: "+str(self(x).shape))
+        print("\n\n\nx shape: "+str(self(x).shape))
         p = torch.mm(self(x), self.mean)
         return p
 
@@ -277,8 +277,6 @@ class ResNet(nn.Module):
         x = torch.mm(x, self.feature_mask)
         x = x.T
         x = x.cpu().numpy();
-        print(x.flatten().shape)
-        print(np.ones(1216).shape)
         x = np.concatenate((x.flatten(), np.ones(1216)))
         x = np.reshape(x, (64, 1, 7, 7))
         x = Parameter(torch.from_numpy(x).type(torch.cuda.FloatTensor), requires_grad=False)
