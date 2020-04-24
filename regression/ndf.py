@@ -219,7 +219,7 @@ class ResNet(nn.Module):
         self.num_classes = num_classes
         self.inplanes = 64
         super(ResNet, self).__init__()
-        self.conv1 = nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3,
+        self.conv1 = nn.Conv2d(1, 30, kernel_size=7, stride=2, padding=3,
                                bias=False)
         self.bn1 = nn.BatchNorm2d(64)
         self.relu = nn.ReLU(inplace=True)
@@ -267,9 +267,6 @@ class ResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def pred(self, x):
-        print("sizzes\n\n")
-        print(self(x)[0].size())
-        print(self.mean.size())
         p = torch.mm(self(x)[1], self.mean)
         return p
 
@@ -277,10 +274,9 @@ class ResNet(nn.Module):
         if x.is_cuda and not self.feature_mask.is_cuda:
             self.feature_mask = self.feature_mask.cuda()
         x = torch.mm(x, self.feature_mask)
-        x = x.T
         x = x.cpu().numpy();
-        x = np.concatenate((x.flatten(), np.ones(1216)))
-        x = np.reshape(x, (64, 1, 7, 7))
+        x = np.concatenate((x.flatten(), np.ones(450)))
+        x = np.reshape(x, (30, 1, 7, 7))
         x = Parameter(torch.from_numpy(x).type(torch.cuda.FloatTensor), requires_grad=False)
         x = self.conv1(x)
         x = self.bn1(x)
