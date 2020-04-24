@@ -332,17 +332,8 @@ class Forest(nn.Module):
             else:
                 p = tree.pred(x)
             predictions.append(p.unsqueeze(2))
-        print("heererere")
-        print(len(predictions))
-        print(self.n_tree)
         prediction = torch.cat(predictions, dim=2)
-        print("heererere")
-        print(len(predictions))
-        print(self.n_tree)
         prediction = torch.sum(prediction, dim=2) / self.n_tree
-        print("heererere")
-        print(len(predictions))
-        print(self.n_tree)
         if save_flag:
             return prediction, cache
         else:
@@ -362,6 +353,8 @@ class NeuralDecisionForest(nn.Module):
         if save_flag:
             # return some intermediate results
             pred, cache = self.forest(feats, save_flag=True)
+            print("heererere")
+            print(len(pred))
             return pred, reg_loss, cache
         else:
             pred = self.forest(feats)
