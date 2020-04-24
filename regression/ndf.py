@@ -337,6 +337,8 @@ class Forest(nn.Module):
         if save_flag:
             return prediction, cache
         else:
+            print("heererere")
+            print(len(prediction))
             return prediction
 
 
