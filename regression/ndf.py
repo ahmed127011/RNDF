@@ -329,8 +329,7 @@ class Forest(nn.Module):
                 cache.append(cache_tree)
             else:
                 p = tree.pred(x)
-            print(p.size())
-            print("\n")
+                print(p.shape)
             predictions.append(p.unsqueeze(2))
         prediction = torch.cat(predictions, dim=2)
         prediction = torch.sum(prediction, dim=2) / self.n_tree
