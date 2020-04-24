@@ -221,7 +221,7 @@ class ResNet(nn.Module):
         super(ResNet, self).__init__()
         self.conv1 = nn.Conv2d(1, 30, kernel_size=8, stride=2, padding=3,
                                bias=False)
-        self.bn1 = nn.BatchNorm2d(64)
+        self.bn1 = nn.BatchNorm2d(30)
         self.relu = nn.ReLU(inplace=True)
         self.n_leaf = 2 ** 6
         self.vector_length = vector_length
