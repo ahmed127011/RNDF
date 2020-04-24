@@ -212,7 +212,7 @@ class ResNet(nn.Module):
         self.num_classes = num_classes
         self.inplanes = 64
         super(ResNet, self).__init__()
-        self.conv1 = nn.Conv1d(30, 64, kernel_size=1, stride=2, padding=3,
+        self.conv1 = nn.Conv2d(30, 64, kernel_size=1, stride=2, padding=3,
                                bias=False)
         self.bn1 = nn.BatchNorm2d(64)
         self.relu = nn.ReLU(inplace=True)
@@ -269,7 +269,7 @@ class ResNet(nn.Module):
             self.feature_mask = self.feature_mask.cuda()
         x = torch.mm(x, self.feature_mask)
         x=x.T
-        x=x.view(x.shape[0],x.shape[1],1)
+        x=x.view(x.shape[0],x.shape[1],1,1)
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
