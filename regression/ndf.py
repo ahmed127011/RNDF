@@ -238,7 +238,7 @@ class ResNet(nn.Module):
         self.feature_mask = onehot[using_idx].T
         self.feature_mask = Parameter(torch.from_numpy(self.feature_mask).type(torch.FloatTensor), requires_grad=False)
         # a leaf node contains a mean vector and a covariance matrix
-        self.mean = np.ones((self.n_leaf, self.vector_length))
+        self.mean = torch.ones((self.n_leaf, self.vector_length))
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
