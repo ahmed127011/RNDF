@@ -190,7 +190,6 @@ class BasicBlock(nn.Module):
 
     def forward(self, x):
         residual = x
-        x=x.view(x.shape[0],x.shape[1],1)
         out = self.conv1(x)
         out = self.bn1(out)
         out = self.relu(out)
@@ -269,7 +268,9 @@ class ResNet(nn.Module):
         if x.is_cuda and not self.feature_mask.is_cuda:
             self.feature_mask = self.feature_mask.cuda()
         x = torch.mm(x, self.feature_mask)
-        x = self.conv1(x.T)
+        x=x.T
+        x=x.view(x.shape[0],x.shape[1],1)
+        x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
         x = self.maxpool(x)
