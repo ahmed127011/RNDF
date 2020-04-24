@@ -266,7 +266,7 @@ class ResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def pred(self, x):
-        p = torch.mm(self(x), self.mean)
+        p = torch.mm(self(x)["probas"], self.mean)
         return p
 
     def forward(self, x):
