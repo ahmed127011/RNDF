@@ -289,9 +289,9 @@ class ResNet(nn.Module):
         x = self.layer2(x)
         x = self.layer3(x)
         x = self.layer4(x)
-        print("avgpool:"+str(x.shape))
         x = self.avgpool(x)
         x = x.view(x.size(0), -1)
+        print("avgpool:"+str(x.shape))
         logits = self.fc(x)
         logits = logits + self.linear_1_bias
         probas = torch.sigmoid(logits)
