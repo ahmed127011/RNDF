@@ -268,8 +268,11 @@ class ResNet(nn.Module):
         if x.is_cuda and not self.feature_mask.is_cuda:
             self.feature_mask = self.feature_mask.cuda()
         x = torch.mm(x, self.feature_mask)
-        x=x.T
-
+        x = x.T
+        x = x.cpu.numpy();
+        x = np.concatenate(x.flatten(),np.ones(1216))
+        x = np.resape(x,(64,1,7,7))
+        x = Parameter(torch.from_numpy(x).type(torch.FloatTensor), requires_grad=False)
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
