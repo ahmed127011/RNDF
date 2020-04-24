@@ -232,7 +232,7 @@ class ResNet(nn.Module):
         self.layer4 = self._make_layer(block, 512, layers[3], stride=2)
         self.avgpool = nn.AvgPool2d(1)#, stride=1, padding=1)
         self.fc = nn.Linear( 512,30, bias=False)
-        self.linear_1_bias = nn.Parameter(torch.zeros(64).float())
+        self.linear_1_bias = nn.Parameter(torch.zeros(30).float())
         using_idx = np.random.choice(num_classes, self.n_leaf, replace=False)
         onehot = np.eye(num_classes)
         self.feature_mask = onehot[using_idx].T
