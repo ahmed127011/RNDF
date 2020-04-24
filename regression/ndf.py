@@ -290,7 +290,7 @@ class ResNet(nn.Module):
         x = self.layer3(x)
         x = self.layer4(x)
 
-        #        x = self.avgpool(x)
+        x = self.avgpool(x)
         x = x.view(x.size(0), -1)
         logits = self.fc(x)
         logits = logits + self.linear_1_bias
