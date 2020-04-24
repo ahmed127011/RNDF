@@ -231,8 +231,8 @@ class ResNet(nn.Module):
         self.layer3 = self._make_layer(block, 256, layers[2], stride=2)
         self.layer4 = self._make_layer(block, 512, layers[3], stride=2)
         self.avgpool = nn.AvgPool2d(1)#, stride=1, padding=1)
-        self.fc = nn.Linear( 30,30, bias=False)
-        self.linear_1_bias = nn.Parameter(torch.zeros(30).float())
+        self.fc = nn.Linear( 512,64, bias=False)
+        self.linear_1_bias = nn.Parameter(torch.zeros(64).float())
         using_idx = np.random.choice(num_classes, self.n_leaf, replace=False)
         onehot = np.eye(num_classes)
         self.feature_mask = onehot[using_idx].T
@@ -240,7 +240,7 @@ class ResNet(nn.Module):
         # a leaf node contains a mean vector and a covariance matrix
         self.mean = np.ones((self.n_leaf, self.vector_length))
         self.mean = Parameter(torch.from_numpy(self.mean).type(torch.cuda.FloatTensor), requires_grad=False)
-        print("mean: "+str(self.mean.size()))
+
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
@@ -293,6 +293,7 @@ class ResNet(nn.Module):
         x = self.layer4(x)
         x = self.avgpool(x)
         x = x.view(x.size(0), -1)
+        print("after view"+str(x.size))
         logits = self.fc(x)
         logits = logits + self.linear_1_bias
         probas = torch.sigmoid(logits)
