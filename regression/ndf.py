@@ -240,7 +240,7 @@ class ResNet(nn.Module):
         # a leaf node contains a mean vector and a covariance matrix
         self.mean = np.ones((self.n_leaf, self.vector_length))
         self.mean = Parameter(torch.from_numpy(self.mean).type(torch.cuda.FloatTensor), requires_grad=False)
-
+        print("mean: "+str(self.mean.size()))
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
