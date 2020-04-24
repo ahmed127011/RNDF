@@ -333,7 +333,7 @@ class Forest(nn.Module):
                 p = tree.pred(x)
             predictions.append(p.unsqueeze(2))
         print("heererere")
-        print(predictions.shape)
+        print(len(predictions))
         print(self.n_tree)
         prediction = torch.cat(predictions, dim=2)
         prediction = torch.sum(prediction, dim=2) / self.n_tree
