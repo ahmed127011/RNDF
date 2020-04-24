@@ -269,6 +269,7 @@ class ResNet(nn.Module):
             self.feature_mask = self.feature_mask.cuda()
         x = torch.mm(x, self.feature_mask)
         print(x.shape)
+        print(type(x))
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
@@ -336,14 +337,11 @@ class NeuralDecisionForest(nn.Module):
     def forward(self, x, debug = False, save_flag = False):
 
         feats, reg_loss = self.feature_layer(x)
-        print(type(feats))
-        nfeats=feats.cpu().numpy()
-        nfeats = np.concatenate((nfeats,np.ones(19)))
-        nfeats=np.reshape(nfeats,64,1,7,7)
+
         if save_flag:
             # return some intermediate results
-            pred, cache = self.forest(nfeats, save_flag = True)
+            pred, cache = self.forest(feats, save_flag = True)
             return pred, reg_loss, cache
         else:
-            pred = self.forest(nfeats)
+            pred = self.forest(feats)
             return pred, reg_loss        
