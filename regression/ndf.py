@@ -5,6 +5,7 @@ import torch.nn as nn
 from torch.nn.parameter import Parameter
 from collections import OrderedDict
 import numpy as np
+import torch.tensor as T
 
 # smallest positive float number
 FLT_MIN = float(np.finfo(np.float32).eps)
@@ -336,9 +337,8 @@ class NeuralDecisionForest(nn.Module):
     def forward(self, x, debug = False, save_flag = False):
 
         feats, reg_loss = self.feature_layer(x)
-        print(type(feats))
-        feats = np.concatenate((feats,np.ones(19)))
-        feats=np.reshape(feats,64,1,7,7)
+        feats = T.concatenate((feats,T.ones(19)))
+        feats=T.view(feats,(64,1,7,7))
         if save_flag:
             # return some intermediate results
             pred, cache = self.forest(feats, save_flag = True)
