@@ -190,7 +190,7 @@ class BasicBlock(nn.Module):
 
     def forward(self, x):
         residual = x
-
+        x=x.view(x.shape[0],x.shape[1],1)
         out = self.conv1(x)
         out = self.bn1(out)
         out = self.relu(out)
