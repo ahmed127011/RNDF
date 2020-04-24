@@ -353,9 +353,11 @@ class NeuralDecisionForest(nn.Module):
         if save_flag:
             # return some intermediate results
             pred, cache = self.forest(feats, save_flag=True)
-            print("heererere")
-            print(len(pred))
             return pred, reg_loss, cache
         else:
+
             pred = self.forest(feats)
+            print("heererere")
+            print(len(pred))
+
             return pred, reg_loss
