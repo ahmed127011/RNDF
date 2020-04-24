@@ -337,13 +337,13 @@ class NeuralDecisionForest(nn.Module):
 
         feats, reg_loss = self.feature_layer(x)
         print(type(feats))
-        feats=feats.numpy()
-        feats = np.concatenate((feats,np.ones(19)))
-        feats=np.reshape(feats,64,1,7,7)
+        nfeats=feats.numpy()
+        nfeats = np.concatenate((nfeats,np.ones(19)))
+        nfeats=np.reshape(nfeats,64,1,7,7)
         if save_flag:
             # return some intermediate results
-            pred, cache = self.forest(feats, save_flag = True)
+            pred, cache = self.forest(nfeats, save_flag = True)
             return pred, reg_loss, cache
         else:
-            pred = self.forest(feats)
+            pred = self.forest(nfeats)
             return pred, reg_loss        
