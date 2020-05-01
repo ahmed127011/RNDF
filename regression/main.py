@@ -61,7 +61,8 @@ def main():
             # initialize the model
             model_train = model.prepare_model(opt)
             print("model shape:")
-            print( db['train'].shape)
+            A = np.array(db['train'])
+            print( A.shape)
             # configurate the optimizer and learning rate scheduler
             optim, sche = optimizer.prepare_optim(model_train, opt)
     
