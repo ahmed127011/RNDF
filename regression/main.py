@@ -60,7 +60,8 @@ def main():
         for exp_id in range(len(db['train'])):
             # initialize the model
             model_train = model.prepare_model(opt)
-            print("model shape:" + db['train'])
+            print("model shape:")
+            print( db['train'].shape)
             # configurate the optimizer and learning rate scheduler
             optim, sche = optimizer.prepare_optim(model_train, opt)
     
