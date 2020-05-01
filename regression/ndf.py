@@ -197,6 +197,7 @@ class BasicBlock(nn.Module):
 
     def forward(self, x):
         residual = x
+
         out = self.conv1(x)
         out = self.bn1(out)
         out = self.relu(out)
@@ -215,36 +216,31 @@ class BasicBlock(nn.Module):
 
 class ResNet(nn.Module):
 
-    def __init__(self, vector_length, block, layers, num_classes, grayscale):
+    def __init__(self, block, layers, num_classes, grayscale):
         self.num_classes = num_classes
         self.inplanes = 64
+        if grayscale:
+            in_dim = 1
+        else:
+            in_dim = 3
         super(ResNet, self).__init__()
-        self.conv1 = nn.Conv2d(1, 30, kernel_size=8, stride=2, padding=3,
+        self.conv1 = nn.Conv2d(in_dim, 64, kernel_size=7, stride=2, padding=3,
                                bias=False)
-        self.bn1 = nn.BatchNorm2d(30)
+        self.bn1 = nn.BatchNorm2d(64)
         self.relu = nn.ReLU(inplace=True)
-        self.n_leaf = 2 ** 6
-        self.vector_length = vector_length
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
         self.layer1 = self._make_layer(block, 64, layers[0])
         self.layer2 = self._make_layer(block, 128, layers[1], stride=2)
         self.layer3 = self._make_layer(block, 256, layers[2], stride=2)
         self.layer4 = self._make_layer(block, 512, layers[3], stride=2)
-        self.avgpool = nn.AvgPool2d(1)#, stride=1, padding=1)
-        self.fc = nn.Linear( 512,64, bias=False)
-        self.linear_1_bias = nn.Parameter(torch.zeros(64).float())
-        using_idx = np.random.choice(num_classes, self.n_leaf, replace=False)
-        onehot = np.eye(num_classes)
-        self.feature_mask = onehot[using_idx].T
-        self.feature_mask = Parameter(torch.from_numpy(self.feature_mask).type(torch.FloatTensor), requires_grad=False)
-        # a leaf node contains a mean vector and a covariance matrix
-        self.mean = np.ones((self.n_leaf, self.vector_length))
-        self.mean = Parameter(torch.from_numpy(self.mean).type(torch.cuda.FloatTensor), requires_grad=False)
+        self.avgpool = nn.AvgPool2d(7, stride=1, padding=2)
+        self.fc = nn.Linear(2048 * block.expansion, 1, bias=False)
+        self.linear_1_bias = nn.Parameter(torch.zeros(self.num_classes-1).float())
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-                m.weight.data.normal_(0, (2. / n) ** .5)
+                m.weight.data.normal_(0, (2. / n)**.5)
             elif isinstance(m, nn.BatchNorm2d):
                 m.weight.data.fill_(1)
                 m.bias.data.zero_()
@@ -266,18 +262,7 @@ class ResNet(nn.Module):
 
         return nn.Sequential(*layers)
 
-    def pred(self, x):
-        p = torch.mm(self(x)[1], self.mean)
-        return p
-
     def forward(self, x):
-        if x.is_cuda and not self.feature_mask.is_cuda:
-            self.feature_mask = self.feature_mask.cuda()
-        x = torch.mm(x, self.feature_mask)
-        x = x.cpu().numpy();
-       # x = np.concatenate((x.flatten(), np.ones(450)))
-        x = np.reshape(x, (30, 1, 8, 8))
-        x = Parameter(torch.from_numpy(x).type(torch.cuda.FloatTensor), requires_grad=False)
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
@@ -287,23 +272,22 @@ class ResNet(nn.Module):
         x = self.layer2(x)
         x = self.layer3(x)
         x = self.layer4(x)
+
         x = self.avgpool(x)
         x = x.view(x.size(0), -1)
-        print("after view"+str(x.size()))
         logits = self.fc(x)
         logits = logits + self.linear_1_bias
         probas = torch.sigmoid(logits)
         return logits, probas
 
 
-def resnet34(num_classes, grayscale, vector_length):
+def resnet34(num_classes, grayscale):
     """Constructs a ResNet-34 model."""
-    model = ResNet(vector_length, block=BasicBlock,
+    model = ResNet(block=BasicBlock,
                    layers=[3, 4, 6, 3],
                    num_classes=num_classes,
                    grayscale=grayscale)
     return model
-
 
 class Forest(nn.Module):
     # a neural decision forest is an ensemble of neural decision trees
@@ -315,7 +299,7 @@ class Forest(nn.Module):
         self.feature_length = feature_length
         self.vector_length = vector_length
         for _ in range(n_tree):
-            tree = resnet34(feature_length, grayscale, vector_length)
+            tree = resnet34(feature_length, grayscale)
             self.trees.append(tree)
 
     def forward(self, x, save_flag=False):
