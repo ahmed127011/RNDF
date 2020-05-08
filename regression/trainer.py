@@ -66,8 +66,6 @@ def train(model, optim, sche, db, opt, exp_id):
     best_MAE = []
     train_set = db['train'][exp_id]
     eval_set = db['eval'][exp_id]
-    print("train set shape:")
-    print(train_set.shape)
     eval_loss, min_MAE, _ = evaluate(model, eval_set, opt)
     # in drop out mode, each time only leaf nodes of one tree is updated
     if opt.dropout:
@@ -190,6 +188,7 @@ def evaluate(model, dataset, opt, report_loss = True, predict = False):
     predicted_ages = []
     for batch_idx, batch in enumerate(loader):
         data = batch['image']
+        print(data.shape)
         target = batch['age']
         target = target.view(len(target), -1)
         with torch.no_grad():
