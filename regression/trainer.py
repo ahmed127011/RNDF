@@ -188,12 +188,12 @@ def evaluate(model, dataset, opt, report_loss = True, predict = False):
     predicted_ages = []
     for batch_idx, batch in enumerate(loader):
         data = batch['image']
-        print(data.shape)
         target = batch['age']
         target = target.view(len(target), -1)
         with torch.no_grad():
             if opt.cuda:
                 data, target = data.cuda(), target.cuda()
+            print(data.shape)
             prediction, reg_loss = model(data)
             print(len(prediction))
             print(prediction.shape)
