@@ -193,7 +193,6 @@ def evaluate(model, dataset, opt, report_loss = True, predict = False):
         with torch.no_grad():
             if opt.cuda:
                 data, target = data.cuda(), target.cuda()
-            print(data.shape)
             prediction, reg_loss = model(data)
             print(len(prediction))
             print(prediction.shape)
