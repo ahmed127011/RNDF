@@ -67,6 +67,8 @@ class Hybrid(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
+        print("shape in resnet");
+        print(x.shape);
         out = F.relu(self.sub_model.bn1(self.sub_model.conv1(x)))
         out = self.sub_model.maxpool(out)
         out = self.sub_model.layer1(out)
