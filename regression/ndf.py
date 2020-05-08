@@ -307,6 +307,7 @@ class Forest(nn.Module):
             self.trees.append(tree)
 
     def forward(self, x, save_flag=False):
+        print(x.shape)
         predictions = []
         cache = []
         for tree in self.trees:
