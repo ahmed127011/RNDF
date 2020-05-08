@@ -335,8 +335,8 @@ class NeuralDecisionForest(nn.Module):
         self.forest = forest
 
     def forward(self, x, debug=False, save_flag=False):
-        print(x.shape)
         feats, reg_loss = self.feature_layer(x)
+        print(feats.shape)
 
         if save_flag:
             # return some intermediate results
