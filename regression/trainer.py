@@ -66,6 +66,8 @@ def train(model, optim, sche, db, opt, exp_id):
     best_MAE = []
     train_set = db['train'][exp_id]
     eval_set = db['eval'][exp_id]
+    print("train set shape:")
+    print(train_set.shape)
     eval_loss, min_MAE, _ = evaluate(model, eval_set, opt)
     # in drop out mode, each time only leaf nodes of one tree is updated
     if opt.dropout:
