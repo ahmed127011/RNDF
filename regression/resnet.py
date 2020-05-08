@@ -85,6 +85,7 @@ class Hybrid(nn.Module):
             out = F.relu(out*mask)
             reg_loss = self.gamma1*mask.mean() + self.gamma2*(1 - mask**2).mean()
         out = self.sub_model.avgpool(out)
+        print(out.shape)
         out = out.view(out.size(0), -1)
         out = self.sub_model.fc(out)
         return out, reg_loss
