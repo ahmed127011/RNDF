@@ -335,10 +335,10 @@ class NeuralDecisionForest(nn.Module):
         self.forest = forest
 
     def forward(self, x, debug=False, save_flag=False):
+
+        feats, reg_loss = self.feature_layer(x)
         print("input shape")
         print(x.shape)
-        feats, reg_loss = self.feature_layer(x)
-
         if save_flag:
             # return some intermediate results
             pred, cache = self.forest(x, save_flag=True)
