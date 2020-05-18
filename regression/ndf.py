@@ -222,9 +222,6 @@ class ResNet(nn.Module):
         feature_length = 30
         onehot = np.eye(feature_length)
         # randomly use some neurons in the feature layer to compute decision function
-        using_idx = np.random.choice(feature_length, 10, replace=False)
-        self.feature_mask = onehot[using_idx].T
-        self.feature_mask = Parameter(torch.from_numpy(self.feature_mask).type(torch.FloatTensor), requires_grad=False)
         # a leaf node contains a mean vector and a covariance matrix
 
         if grayscale:
@@ -232,6 +229,10 @@ class ResNet(nn.Module):
         else:
             in_dim = 3
         super(ResNet, self).__init__()
+        using_idx = np.random.choice(feature_length, 10, replace=False)
+        self.feature_mask = onehot[using_idx].T
+        self.feature_mask = Parameter(torch.from_numpy(self.feature_mask).type(torch.FloatTensor), requires_grad=False)
+
         self.conv1 = nn.Conv2d(in_dim, 64, kernel_size=7, stride=2, padding=3,
                                bias=False)
         self.bn1 = nn.BatchNorm2d(64)
