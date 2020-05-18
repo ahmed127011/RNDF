@@ -285,7 +285,7 @@ class ResNet(nn.Module):
         probas = torch.sigmoid(logits)
         print(probas.shape)
         print(logits.shape)
-        return  probas
+        return probas
 
 
 def resnet34(num_classes, grayscale):
