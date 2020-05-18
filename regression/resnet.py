@@ -67,8 +67,8 @@ class Hybrid(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
-        print("shape in resnet");
-        print(x.shape);
+        #print("shape in resnet");
+        #print(x.shape);
         out = F.relu(self.sub_model.bn1(self.sub_model.conv1(x)))
         out = self.sub_model.maxpool(out)
         out = self.sub_model.layer1(out)
@@ -85,7 +85,7 @@ class Hybrid(nn.Module):
             out = F.relu(out*mask)
             reg_loss = self.gamma1*mask.mean() + self.gamma2*(1 - mask**2).mean()
         out = self.sub_model.avgpool(out)
-        print(out.shape)
+        #print(out.shape)
         out = out.view(out.size(0), -1)
         out = self.sub_model.fc(out)
         return out, reg_loss
