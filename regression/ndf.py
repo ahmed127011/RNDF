@@ -275,7 +275,7 @@ class ResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
-        if x.is_cuda and not self.feature_mask.is_cuda:
+        if not self.feature_mask.is_cuda:
             self.feature_mask = self.feature_mask.cuda()
         x = torch.mm(x, self.feature_mask)
         x = self.conv1(x)
