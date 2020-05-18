@@ -245,6 +245,7 @@ class ResNet(nn.Module):
             elif isinstance(m, nn.BatchNorm2d):
                 m.weight.data.fill_(1)
                 m.bias.data.zero_()
+        self.mean = Parameter(torch.from_numpy(self.mean).type(torch.FloatTensor).cuda(), requires_grad=False)
 
     def pred(self, x):
         p = torch.mm(self(x), self.mean)
