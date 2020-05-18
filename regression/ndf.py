@@ -222,7 +222,7 @@ class ResNet(nn.Module):
         feature_length = 30
         onehot = np.eye(feature_length)
         # randomly use some neurons in the feature layer to compute decision function
-        using_idx = np.random.choice(feature_length, 64, replace=False)
+        using_idx = np.random.choice(feature_length, 10, replace=False)
         self.feature_mask = onehot[using_idx].T
         self.feature_mask = Parameter(torch.from_numpy(self.feature_mask).type(torch.FloatTensor), requires_grad=False)
         # a leaf node contains a mean vector and a covariance matrix
