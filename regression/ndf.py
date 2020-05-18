@@ -234,9 +234,8 @@ class ResNet(nn.Module):
         self.layer3 = self._make_layer(block, 256, layers[2], stride=2)
         self.layer4 = self._make_layer(block, 512, layers[3], stride=2)
         self.avgpool = nn.AvgPool2d(7, stride=1, padding=2)
-        self.fc = nn.Linear(12800,9, bias=False)
-        print("number of classes")
-        self.linear_1_bias = nn.Parameter(torch.zeros(30).float())
+        self.fc = nn.Linear(12800,1, bias=False)
+        self.linear_1_bias = nn.Parameter(torch.zeros(1).float())
         self.mean = torch.ones((30, 1))
 
         for m in self.modules():
