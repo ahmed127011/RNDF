@@ -247,8 +247,8 @@ class ResNet(nn.Module):
                 m.bias.data.zero_()
 
     def pred(self, x):
-        p = torch.mm(self(x), self.mean)
-        return p
+        #p = torch.mm(self(x), self.mean)
+        return self(x)
 
     def _make_layer(self, block, planes, blocks, stride=1):
         downsample = None
