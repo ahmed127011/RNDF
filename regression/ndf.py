@@ -236,8 +236,7 @@ class ResNet(nn.Module):
         self.avgpool = nn.AvgPool2d(7, stride=1, padding=2)
         self.fc = nn.Linear(12800,30, bias=False)
         print("number of classes")
-        print(self.num_classes-1)
-        self.linear_1_bias = nn.Parameter(torch.zeros(self.num_classes-1).float())
+        self.linear_1_bias = nn.Parameter(torch.zeros(30).float())
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
