@@ -237,6 +237,7 @@ class ResNet(nn.Module):
         self.fc = nn.Linear(12800,30, bias=False)
         print("number of classes")
         self.linear_1_bias = nn.Parameter(torch.zeros(30).float())
+        self.mean = torch.ones((30, 1))
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -245,7 +246,6 @@ class ResNet(nn.Module):
             elif isinstance(m, nn.BatchNorm2d):
                 m.weight.data.fill_(1)
                 m.bias.data.zero_()
-        self.mean = Parameter(torch.from_numpy(self.mean).type(torch.FloatTensor).cuda(), requires_grad=False)
 
     def pred(self, x):
         p = torch.mm(self(x), self.mean)
