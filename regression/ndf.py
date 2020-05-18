@@ -219,6 +219,14 @@ class ResNet(nn.Module):
     def __init__(self, block, layers, num_classes, grayscale):
         self.num_classes = num_classes
         self.inplanes = 64
+        feature_length = 30
+        onehot = np.eye(feature_length)
+        # randomly use some neurons in the feature layer to compute decision function
+        using_idx = np.random.choice(feature_length, 64, replace=False)
+        self.feature_mask = onehot[using_idx].T
+        self.feature_mask = Parameter(torch.from_numpy(self.feature_mask).type(torch.FloatTensor), requires_grad=False)
+        # a leaf node contains a mean vector and a covariance matrix
+
         if grayscale:
             in_dim = 1
         else:
@@ -236,7 +244,6 @@ class ResNet(nn.Module):
         self.avgpool = nn.AvgPool2d(7, stride=1, padding=2)
         self.fc = nn.Linear(12800,1, bias=False)
         self.linear_1_bias = nn.Parameter(torch.zeros(1).float())
-        self.mean = torch.ones((30, 1))
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -268,6 +275,9 @@ class ResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
+        if x.is_cuda and not self.feature_mask.is_cuda:
+            self.feature_mask = self.feature_mask.cuda()
+        x = torch.mm(x, self.feature_mask)
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
