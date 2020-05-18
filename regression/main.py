@@ -60,7 +60,7 @@ def main():
         for exp_id in range(len(db['train'])):
             # initialize the model
             model_train = model.prepare_model(opt)
-            print("model shape:")
+            #print("model shape:")
           #  print(db['train'].head)
 
             #print( np.array(db['eval']).shape)
