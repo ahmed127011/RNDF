@@ -284,6 +284,8 @@ class ResNet(nn.Module):
         logits = self.fc(x)
         logits = logits + self.linear_1_bias
         probas = torch.sigmoid(logits)
+        print(probas.shape)
+        print(logits.shape)
         return logits, probas
 
 
