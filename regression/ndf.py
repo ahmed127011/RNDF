@@ -283,8 +283,8 @@ class ResNet(nn.Module):
         logits = self.fc(x)
         logits = logits + self.linear_1_bias
         probas = torch.sigmoid(logits)
-        print(probas.shape)
-        print(logits.shape)
+       # print(probas.shape)
+       # print(logits.shape)
         return probas
 
 
@@ -320,7 +320,7 @@ class Forest(nn.Module):
                 cache.append(cache_tree)
             else:
                 p = tree.pred(x)
-                print(p.shape)
+                #print(p.shape)
             predictions.append(p.unsqueeze(2))
         prediction = torch.cat(predictions, dim=2)
         prediction = torch.sum(prediction, dim=2) / self.n_tree
@@ -340,8 +340,8 @@ class NeuralDecisionForest(nn.Module):
     def forward(self, x, debug=False, save_flag=False):
 
         feats, reg_loss = self.feature_layer(x)
-        print("input shape")
-        print(x.shape)
+       # print("input shape")
+       # print(x.shape)
         if save_flag:
             # return some intermediate results
             pred, cache = self.forest(x, save_flag=True)
