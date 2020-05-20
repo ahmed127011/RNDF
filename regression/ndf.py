@@ -283,7 +283,8 @@ class ResNet(nn.Module):
             for xj in xi:
                 xj = torch.mm(xj, self.feature_mask)
 
-        print("x shape = "+ x .shape)
+        print("x shape = ")
+        print( x .shape)
       #  x = torch.mm(x, self.feature_mask)
         x = self.conv1(x)
         x = self.bn1(x)
