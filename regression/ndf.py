@@ -279,12 +279,11 @@ class ResNet(nn.Module):
 
         if not self.feature_mask.is_cuda:
             self.feature_mask = self.feature_mask.cuda()
-        print(x.shape)
         for xi in x:
             for xj in xi:
                 xj = torch.mm(xj, self.feature_mask)
 
-        print( self.feature_mask .shape)
+        print( x .shape)
       #  x = torch.mm(x, self.feature_mask)
         x = self.conv1(x)
         x = self.bn1(x)
