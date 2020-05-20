@@ -231,6 +231,7 @@ class ResNet(nn.Module):
         super(ResNet, self).__init__()
         using_idx = np.random.choice(feature_length, 10, replace=False)
         self.feature_mask = onehot[using_idx].T
+        print(self.feature_mask)
         self.feature_mask = Parameter(torch.from_numpy(self.feature_mask).type(torch.FloatTensor), requires_grad=False)
 
         self.conv1 = nn.Conv2d(in_dim, 64, kernel_size=7, stride=2, padding=3,
