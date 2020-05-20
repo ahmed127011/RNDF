@@ -219,7 +219,7 @@ class ResNet(nn.Module):
     def __init__(self, block, layers, num_classes, grayscale):
         self.num_classes = num_classes
         self.inplanes = 64
-        feature_length = 30
+        feature_length = 224
         onehot = np.eye(feature_length)
         # randomly use some neurons in the feature layer to compute decision function
         # a leaf node contains a mean vector and a covariance matrix
@@ -229,10 +229,9 @@ class ResNet(nn.Module):
         else:
             in_dim = 3
         super(ResNet, self).__init__()
-        using_idx = np.random.choice(feature_length, 10, replace=False)
+        using_idx = np.random.choice(feature_length, 50, replace=False)
         self.feature_mask = onehot[using_idx].T
         self.feature_mask = Parameter(torch.from_numpy(self.feature_mask).type(torch.FloatTensor), requires_grad=False)
-        print(self.feature_mask)
 
         self.conv1 = nn.Conv2d(in_dim, 64, kernel_size=7, stride=2, padding=3,
                                bias=False)
@@ -281,6 +280,10 @@ class ResNet(nn.Module):
         if not self.feature_mask.is_cuda:
             self.feature_mask = self.feature_mask.cuda()
         print(x.shape)
+        for xi in x:
+            for xj in xi:
+                xj = torch.mm(xj, self.feature_mask)
+
         print( self.feature_mask .shape)
         x = torch.mm(x, self.feature_mask)
         x = self.conv1(x)
