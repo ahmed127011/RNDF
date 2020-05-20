@@ -285,7 +285,7 @@ class ResNet(nn.Module):
                 xj = torch.mm(xj, self.feature_mask)
 
         print( self.feature_mask .shape)
-        x = torch.mm(x, self.feature_mask)
+      #  x = torch.mm(x, self.feature_mask)
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
