@@ -104,6 +104,8 @@ def train(model, optim, sche, db, opt, exp_id):
             # forward pass to get prediction
             prediction, reg_loss = model(data)
             if(len(prediction)!=len(target)):
+                print(len(target))
+                print(len(prediction))
                 continue
             loss = F.mse_loss(prediction, target) + reg_loss
             
@@ -202,6 +204,8 @@ def evaluate(model, dataset, opt, report_loss = True, predict = False):
             if report_loss:
                 # rescale the predicted and target residual
                 if len(target)!=len(age):
+                    print(len(target))
+                    print(len(age))
                     continue
                 MAE += torch.abs((age - target)).sum(dim = 1).sum(dim = 0)
                 counts_below_threshold += (torch.abs(age-target) < threshold).sum().data.item()
