@@ -200,8 +200,8 @@ def evaluate(model, dataset, opt, report_loss = True, predict = False):
             age = prediction.view(len(prediction), -1)
             if report_loss:
                 # rescale the predicted and target residual
-                print(len(age))
-                print(len(target))
+                if(len(target)!=len(age))
+                    continue
                 MAE += torch.abs((age - target)).sum(dim = 1).sum(dim = 0)
                 counts_below_threshold += (torch.abs(age-target) < threshold).sum().data.item()
                 eval_loss += F.mse_loss(prediction, target.view(len(target), -1), reduction='sum').data.item()    
