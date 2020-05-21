@@ -279,12 +279,12 @@ class ResNet(nn.Module):
 
         if not self.feature_mask.is_cuda:
             self.feature_mask = self.feature_mask.cuda()
-        xt = torch.ones((30,3,50))
+        xt = torch.ones((30,3,50,50))
         i=0
         for xi in x:
             j=0
             for xj in xi:
-                xt[i][j] = torch.mm(xj, self.feature_mask)
+                xt[i][j] = torch.mm(self.feature_mask.T,torch.mm(xj, self.feature_mask))
                 j=j+1
             i=i+1
         x=xt
