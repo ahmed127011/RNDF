@@ -284,7 +284,7 @@ class ResNet(nn.Module):
         for xi in x:
             j=0
             for xj in xi:
-                xt[i][j] = torch.mm(torch.mm(xj, self.feature_mask).T,self.feature_mask.T)
+                xt[i][j] = torch.mm(torch.mm(xj, self.feature_mask).T,self.feature_mask)
                 j=j+1
             i=i+1
         x=xt.cuda()
