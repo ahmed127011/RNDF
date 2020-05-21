@@ -76,7 +76,7 @@ def train(model, optim, sche, db, opt, exp_id):
         train_loss_history = []
         eval_loss_history = []
         
-    for epoch in range(1, opt.epochs + 1):
+    for epoch in range(1, 4 + 1):
         # At each epoch, train the neural decision forest and update
         # the leaf node distribution separately 
         print("Starting A new epoch"+ str(opt.epochs))
@@ -92,7 +92,6 @@ def train(model, optim, sche, db, opt, exp_id):
         for batch_idx, batch in enumerate(train_loader):
             data = batch['image']
             target = batch['age']
-            print(target.shape)
             target = target.view(len(target), -1)
             if opt.cuda:
                 with torch.no_grad():
@@ -104,7 +103,8 @@ def train(model, optim, sche, db, opt, exp_id):
             
             # forward pass to get prediction
             prediction, reg_loss = model(data)
-
+            if(len(prediction)!=len(target)):
+                continue
             loss = F.mse_loss(prediction, target) + reg_loss
             
             # compute gradient in the computational graph
