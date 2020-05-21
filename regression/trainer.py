@@ -76,7 +76,7 @@ def train(model, optim, sche, db, opt, exp_id):
         train_loss_history = []
         eval_loss_history = []
         
-    for epoch in range(1, 4 + 1):
+    for epoch in range(1, opt.epochs + 1):
         # At each epoch, train the neural decision forest and update
         # the leaf node distribution separately 
         print("Starting A new epoch"+ str(opt.epochs))
