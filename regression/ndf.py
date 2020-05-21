@@ -288,8 +288,6 @@ class ResNet(nn.Module):
                 j=j+1
             i=i+1
         x=xt.cuda()
-        print("x shape = ")
-        print( x .shape)
       #  x = torch.mm(x, self.feature_mask)
         x = self.conv1(x)
         x = self.bn1(x)
@@ -301,7 +299,7 @@ class ResNet(nn.Module):
         x = self.layer3(x)
         x = self.layer4(x)
 
-        x = self.avgpool(x)
+     #   x = self.avgpool(x)
         x = x.view(x.size(0), -1)
         logits = self.fc(x)
         logits = logits + self.linear_1_bias
