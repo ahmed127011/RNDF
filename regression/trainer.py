@@ -79,7 +79,7 @@ def train(model, optim, sche, db, opt, exp_id):
     for epoch in range(1, opt.epochs + 1):
         # At each epoch, train the neural decision forest and update
         # the leaf node distribution separately 
-        
+        print("Starting A new epoch"+ str(opt.epochs))
         # Train neural decision forest
         # set the model in the training mode
         model.train()
@@ -92,6 +92,7 @@ def train(model, optim, sche, db, opt, exp_id):
         for batch_idx, batch in enumerate(train_loader):
             data = batch['image']
             target = batch['age']
+            print(target.shape)
             target = target.view(len(target), -1)
             if opt.cuda:
                 with torch.no_grad():
