@@ -334,6 +334,7 @@ class Forest(nn.Module):
         predictions = []
         cache = []
         for tree in self.trees:
+            tree.train()
             if save_flag:
                 # record some intermediate results
                 mu, cache_tree = tree(x, save_flag=True)
